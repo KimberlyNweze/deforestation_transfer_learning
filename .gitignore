@@ -1,9 +1,18 @@
+# Large raster data (do not upload)
+*.tif
+*.tiff
+
+# Raw satellite imagery
+ChosenContext/Cameroon/raw_data/
+ReplicateBaseline/**/masks/
+ReplicateBaseline/**/images/
+
+# OS junk
 .DS_Store
+
 .ipynb_checkpoints/
 __pycache__/
 *.pyc
 *.hdf5
 *.keras
-*.npy
-.env
 
