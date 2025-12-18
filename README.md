@@ -1,61 +1,71 @@
 # deforestation_transfer_learning
-Transferability of an Attention U-Net for Detecting Deforestation in the Congo Basin: A Case Study in South Cameroon
+Transferability of an Attention U-Net for Detecting Deforestation in the Congo Basin: A Case Study in Cameroon
+# Datasets 
+## Baseline - Amazon 4 band 
+Link to download the Amazon.rar file - https://zenodo.org/records/4498086#.YMh3GfKSmCU
+## Cameroon raw 4 band satelite imagery 
+Link to Ground Cover - https://drive.google.com/file/d/1Ij42CJiqiRBPEgzYitj-daHIWa3JQcdZ/view?usp=sharing
 
+Link to Ground Truth mask - https://drive.google.com/file/d/1OH788bh1DSTjmwRI-Pt94_nHncOz6BNj/view?usp=sharing
 
-# Environment setup and Dependencies Documentation 
-This project uses a dedicated Conda environment to ensure reproducibility and compatibility with the Attention U-Net architecture implemented in the original deforestation detection paper.
+# Repository Structure 
+This repository is organised to support reproducibility, comparison, and documentation of both the baseline and adapted deforestation detection models.
+## ChosenContext/
+Contains contextual and methodological documentation for the adapted Cameroon study:
 
-**Environment name:** attunet
+- Adapted Model Architecture Changes – Details modifications made to the baseline Attention U-Net architecture.
 
-**Operating System:** macOS Sequoia 15.7.1
+- Challenge and SDG Alignment – Discusses project challenges and alignment with relevant Sustainable Development Goals.
 
-**Architecture:** Apple Silicon (ARM64 — M-series)
+- Dataset Curation – Describes data sourcing, preprocessing decisions, and ethical considerations.
 
-**Python version:** 3.9
+- Cameroon/ – Core implementation for the adapted model, including:
 
-## 1. Create the Conda Environment
-*conda create -n attunet python=3.9*
+  * Scripts to generate image tiles
 
-*conda activate attunet*
+  * Generated tiles
 
-Python 3.9 is required for compatibility with TensorFlow 2.8 and the segmentation-models package.
+  * Training scripts
 
-## 2. Install Geospatial Dependencies
-*conda install -c conda-forge gdal rasterio rioxarray*
+  * Trained model weights
 
-These libraries depend on GDAL and must be installed through Conda on macOS.
+  * Training and evaluation results
+ ## ReplicateBaseline/
+ Supports full reproduction of the original baseline model:
+ - environment.yml – Conda environment file listing all required dependencies.
+ - Reproduce Baseline – Notebook and scripts to reproduce baseline results from the original repository.
+ - Environment Setup Documentation – Detailed explanation of environment setup and dependency management.
+ - Original Repository – Unmodified files from the original Attention U-Net repository, included for reference and transparency.
 
-## 3. Install Apple-Optimised TensorFlow & Keras
-Apple Silicon machines require the unqiue Apple TensorFlow build:
+## Comparing The Models/
+- Contains scripts and outputs used to quantitatively compare the baseline and adapted models, including per-image and aggregate performance metrics.
 
-*pip install tensorflow-macos==2.8* - official Apple version
+# How to Use the Repository
+## Reproducing the Baseline Model
+- Download the AMAZON.rar dataset.
+- Unzip the dataset.
+- Place the extracted folder into the directory specified in the baseline preprocessing scripts.
+- Run the baseline preprocessing and training scripts as provided.
 
-*pip install keras==2.8*
+This will replicate the baseline Attention U-Net results reported in the original study.
+## Running the Cameroon (Adapted) Model
+There are two ways to run the adapted Cameroon model, depending on whether you want to reproduce the full preprocessing pipeline or use the preprocessed data provided in this repository.
+### Option A: Full Data Preparation and Training (From Raw Data)
+- Download the Sentinel-2 imagery and corresponding ground truth masks from the provided data source links.
+- Place the files into the directory paths specified in the Cameroon preprocessing scripts.
+- Run the tiling and preprocessing scripts to generate training, validation, and test tiles.
+- Train the adapted Attention U-Net model using the provided training scripts.
+- Evaluate the model using the included evaluation and comparison notebooks.
 
-*pip install tensorflow-metal* - GPU acceleration using the Metal backend
+This option fully reproduces the data preparation workflow and is suitable for adapting the pipeline to new regions.
 
-## 4. Install Remaining Python Dependencies
-*pip install numpy pillow segmentation-models rarfile pyunpack patool matplotlib pandas pathlib scikit-learn*
+## Option B: Direct Model Training Using Preprocessed Tiles
+- Clone this repository.
+- Navigate to the dataset_split folder within the Cameroon preprocessing directory.
+- Run the South Cameroon training script, which directly uses the preprocessed training, validation, and test tiles already included in the repository.
+- Evaluate the model using the provided evaluation and comparison notebooks.
 
-From teh original requiremnets PIL and sklearn were replaced with pillow and scikit-learn repectively becasue they were outdated 
+  
+This option allows for replication of the reported results without rerunning the preprocessing steps. All file paths are defined relative to the repository root to ensure portability across systems.
 
-## 5. Full list of Depenedencies 
-|Package|Version|Purpose
-|--------|-------|----------|
-|Package|	Version	|Purpose|
-|tensorflow-macos	|2.8	|Apple TensorFlow build|
-|keras	|2.8|	Model API|
-|tensorflow-metal	|—	|GPU acceleration|
-|numpy|	—	|Array operations|
-|pillow|	—	|Image reading and preprocessing|
-|segmentation-models	|—	|U-Net / Attention U-Net blocks|
-|matplotlib|	—	|Visualisation|
-|pandas	|—	|Data handling|
-|scikit-learn	|—	|Metrics (F1-score, IoU|
-|gdal	|—	|Geospatial data processing|
-|rasterio|	—|	Satellite raster handling|
-|rioxarray	|—	|GeoTIFF & metadata|
-|rarfile|	—	|Archive handling|
-|pyunpack	|—	|Decompression utilities|
-|patool	|—|	Archive extraction|
-|pathlib	|—	|File system utilities|
+ 
